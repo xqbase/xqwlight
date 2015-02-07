@@ -1,0 +1,170 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type"
+content="text/html; charset=gb_2312-80">
+<meta name="GENERATOR" content="Microsoft FrontPage Express 2.0">
+<title>电脑象棋循序渐进(一)：从图形界面做起</title>
+</head>
+
+<body background="background.gif">
+
+<dl>
+    <div align="center"><center>
+    <dt><font size="6" face="隶书">电脑象棋循序渐进</font></dt>
+    </center></div><div align="center"><center>
+    <dt>　</dt>
+    </center></div><div align="center"><center>
+    <dt>象棋百科全书网 <font face="Times New Roman">(</font><a
+        href="mailto:webmaster@xqbase.com"><font
+        face="Times New Roman">webmaster@xqbase.com</font></a><font
+        face="Times New Roman">)</font>　<font
+        face="Times New Roman">2008</font>年<font
+        face="Times New Roman">4</font>月</dt>
+    </center></div>
+    <dt>　</dt>
+    <div align="left">
+    <dt>　　本连载将分六个阶段来阐述一个电脑象棋程序从无到有、从弱智到聪明的过程，对应“象棋小巫师”示范程序的各个版本：</dt>
+    </div><div align="left">
+    <dt>　　<font face="Times New Roman">0.1</font>版：介绍制作象棋图形界面的方法；</dt>
+    </div><div align="left">
+    <dt>　　<font face="Times New Roman">0.2</font>版：介绍中国象棋规则的实现；</dt>
+    </div><div align="left">
+    <dt>　　<font face="Times New Roman">0.3</font>版：介绍以<font
+        face="Times New Roman">Alpha-Beta</font>搜索为基础的一些计算机博弈基本智能算法；</dt>
+    </div><div align="left">
+    <dt>　　<font face="Times New Roman">0.4</font>版：介绍<font
+        face="Times New Roman">Zobrist</font>校验码、重复局面判断以及消除水平线效应的各种技术，进一步提高程序的智能；</dt>
+    </div><div align="left">
+    <dt>　　<font face="Times New Roman">0.5</font>版：介绍置换表技术和走法顺序优化技巧，使一个象棋程序的技术架构趋于完整；</dt>
+    </div><div align="left">
+    <dt>　　<font face="Times New Roman">0.6</font>版：介绍克服搜索不稳定性的方法、开局库、走子随机性等锦上添花的技术。</dt>
+    </div><div align="left">
+    <dt>　　本连载花费的文字不多，关键的技术只是点到为止，而在示范程序里则有详尽的注释。关于一些技术细节，可参阅象棋百科全书网计算机博弈专栏关于国际象棋程序设计的系列译文：</dt>
+    </div><div align="left">
+    <dt>　　　　<a
+        href="http://www.xqbase.com/computer.htm"
+        target="_blank"><font face="Times New Roman">http://www.xqbase.com/computer.htm</font></a></dt>
+    </div>
+    <dt>　</dt>
+    <dt><font size="5" face="Arial"><strong>(</strong></font><font
+        size="5" face="楷体_GB2312"><strong>一</strong></font><font
+        size="5" face="Arial"><strong>) </strong></font><font
+        size="5" face="楷体_GB2312"><strong>从图形界面做起</strong></font></dt>
+    <dt>　</dt>
+    <dt>　　与本文配套的示范程序是“<a
+        href="http://www.xqbase.com/download/xqwlight_win32.7z">象棋小巫师</a>”<font
+        face="Times New Roman">0.1</font>版，程序清单是：</dt>
+    <dt>　　<font face="Times New Roman">(1) XQWL01.CPP</font>——<font
+        face="Times New Roman">C++</font>源程序；</dt>
+    <dt>　　<font face="Times New Roman">(2) XQWLIGHT.RC</font>——资源描述文件；</dt>
+    <dt>　　<font face="Times New Roman">(3) RESOURCE.H</font>——资源符号定义文件；</dt>
+    <dt>　　<font face="Times New Roman">(4) RES</font>目录——图标、图片、声音等资源。</dt>
+    <dt>　</dt>
+    <dt>　　为了使更多的程序设计师对这个话题感兴趣，我们选用了最常用的程序开发工具——<font
+        face="Times New Roman">Microsoft Visual C++</font>，它适合编写<font
+        face="Times New Roman">Windows</font>下的任何应用程序。为了让程序尽可能简洁，我们不使用任何第三方的控件和库，取而代之的是大量的<font
+        face="Times New Roman">Win32 API</font>函数。</dt>
+    <dt>　　象棋程序是让人跟电脑下棋的，所以图形界面必不可少。我们选取了开源程序《象棋巫师》中的素材——一张<font
+        face="Times New Roman">520x576</font>大小的棋盘图片和几张<font
+        face="Times New Roman">56x56</font>大小的棋子图片，拼凑在一起便可组成一副不太难看的棋具。</dt>
+    <div align="center"><center>
+    <dt>　</dt>
+    </center></div><div align="center"><center>
+    <dt><img src="xqwlight.jpg" width="526" height="628"></dt>
+    </center></div>
+    <dt>　</dt>
+    <dt>　　仅仅把棋盘和棋子画到窗口上是不够的，图形界面的另一个作用是让用户走棋。走棋的操作应该是非常简单的——用鼠标点击一枚棋子，该棋子就被选中<font
+        face="Times New Roman">(</font>上面有个标记<font
+        face="Times New Roman">)</font>，用户想让这枚棋子走到哪个位置，就用鼠标点击哪个位置。因此，操作过程可分为两状态：</dt>
+    <dt>　　<font face="Times New Roman">A. </font>让用户选子的状态：只能点击自己的子；</dt>
+    <dt>　　<font face="Times New Roman">B. </font>让用户落子的状态：如果点击自己的子，那么被选中的子改变了；如果点击对方的子或空格处，那么可以走这步棋。</dt>
+    <div align="center"><center>
+    <dt>　</dt>
+    </center></div><div align="center"><center>
+    <dt><img src="select.gif" width="265" height="145"></dt>
+    </center></div><div align="center"><center>
+    <dt>　</dt>
+    </center></div>
+    <dt>　　这样，鼠标点击事件<font
+        face="Times New Roman">(WM_LBUTTONDOWN</font>消息<font
+        face="Times New Roman">)</font>的处理过程就可以写成：</dt>
+    <dd>　</dd>
+    <dd>if (点击自己的子) {</dd>
+    <dd>　把点击的子选中; // 进入状态B(已选中)</dd>
+    <dd>} else if (已经有子选中) {</dd>
+    <dd>　可以走这步棋(刚才选中位置-&gt;现在点击的位置);
+        // 进入状态A(未选中)</dd>
+    <dd>}</dd>
+    <dt>　</dt>
+    <dt>　　那么，如何把一枚棋子画在棋盘上呢？实际上只要用<font
+        face="Times New Roman">BitBlt</font>和<font
+        face="Times New Roman">TransparentBlt</font>两个函数就够了，过程如下：</dt>
+    <dt>　　<font face="Times New Roman">(1) </font>把原来位置的棋子用棋盘图案覆盖掉<font
+        face="Times New Roman">(</font>用<font
+        face="Times New Roman">BitBlt</font>函数<font
+        face="Times New Roman">)</font>；</dt>
+    <dt>　　<font face="Times New Roman">(2) </font>在该位置贴上棋子的图案，由于棋子图案是透明的，所以要用<font
+        face="Times New Roman">TransparentBlt</font>函数；</dt>
+    <dt>　　<font face="Times New Roman">(3) </font>如果这枚棋子是选中的，那么再在该位置贴上选中的图案<font
+        face="Times New Roman">(</font>再用一次<font
+        face="Times New Roman">TransparentBlt</font>函数<font
+        face="Times New Roman">)</font>。</dt>
+    <dt>　</dt>
+    <dt>　　在象棋小巫师中，所有在棋盘上的棋子都放在数组
+        <font face="Times New Roman">ucpcSquares[256] </font>中<font
+        face="Times New Roman">(</font>长度<font
+        face="Times New Roman">256</font>的好处将在后面介绍<font
+        face="Times New Roman">)</font>，数组指标代表格子的编号，匈牙利标记
+        <font face="Times New Roman">uc </font>表示每个元素占用一个字节，<font
+        face="Times New Roman">pc</font> 表示棋子标识。棋子标识的含义如下：</dt>
+    <dt>　　<font face="Times New Roman">A. 0</font>表示空格<font
+        face="Times New Roman">(</font>没有棋子<font
+        face="Times New Roman">)</font>；</dt>
+    <dt>　　<font face="Times New Roman">B. 8~14</font>依次表示红方的帅、仕、相、马、车、炮和兵；</dt>
+    <dt>　　<font face="Times New Roman">C. 16~22</font>依次表示黑方的将、士、象、马、车、炮和卒。</dt>
+    <dt>　　这样做的好处是判断棋子的颜色非常简单——<font
+        face="Times New Roman">(pc &amp; 8) != 0 </font>表示红方的棋子，<font
+        face="Times New Roman">(pc &amp; 16) != 0 </font>表示黑方的棋子。</dt>
+    <dt>　</dt>
+    <dt>　　在象棋小巫师中，选中的棋子用变量 <font
+        face="Times New Roman">sqSelected </font>表示，<font
+        face="Times New Roman">sq </font>代表格子的编号。判断棋子
+        <font face="Times New Roman">ucpcSquares[sq] </font>是否被选中，只需要判断
+        <font face="Times New Roman">sq </font>与 <font
+        face="Times New Roman">sqSelected </font>是否相等即可。<font
+        face="Times New Roman">sqSelected == 0 </font>表示没有棋子被选中。</dt>
+    <dt>　　在象棋小巫师中，一个走法只用一个数子表示，即
+        <font face="Times New Roman">mv = sqSrc + sqDst * 256</font>，<font
+        face="Times New Roman">mv </font>代表走法，<font
+        face="Times New Roman">mv % 256 </font>就是起始格子的编号，<font
+        face="Times New Roman">mv / 256 </font>就是目标格子的编号。走完一步棋后，通常会把该走法赋值给变量
+        <font face="Times New Roman">mvLast</font>，并把 <font
+        face="Times New Roman">mvLast % 256 </font>和 <font
+        face="Times New Roman">mvLast / 256 </font>这两个格子都做上标记，这样就能清晰地看到用户或电脑刚才走的一步棋了。</dt>
+</dl>
+
+<dir>
+    <li>上一篇</li>
+    <li>下一篇　<a href="stepbystep2.htm">电脑象棋循序渐进<font
+        face="Times New Roman">(</font>二<font
+        face="Times New Roman">)</font>：让电脑掌握象棋规则</a></li>
+</dir>
+<div align="center"><center>
+
+<table border="0">
+    <tr>
+        <td><p align="center"><a
+        href="http://www.xqbase.com/" target="_blank"><img
+        src="xqbase.gif" border="0" width="88"
+        height="31"></a></p>
+        </td>
+    </tr>
+    <tr>
+        <td><a href="http://www.xqbase.com/"
+        target="_blank"><font size="2" face="Arial"><strong>www.xqbase.com</strong></font></a></td>
+    </tr>
+</table>
+</center></div>
+</body>
+</html>

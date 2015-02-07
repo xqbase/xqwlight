@@ -1,0 +1,167 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=gbk">
+    <title>象棋小巫师</title>
+    <script type="text/javascript" src="book.js"></script>
+    <script type="text/javascript" src="position.js"></script>
+    <script type="text/javascript" src="search.js"></script>
+    <script type="text/javascript" src="board.js"></script>
+    <script type="text/javascript" src="cchess.js"></script>
+    <style type="text/css"><!--
+body {
+  background: url(../background.gif);
+}
+
+span.td {
+  display: inline-block;
+}
+
+div.label {
+  font-size: 14px;
+  padding:2px;
+}
+
+select {
+  font-size: 14px;
+  width: 108px;
+  padding:2px;
+}
+
+option {
+  font-size: 14px;
+}
+
+input.button {
+  font-size: 14px;
+  width: 108px;
+}
+
+label {
+  font-size: 14px;
+}
+
+    --></style>
+  </head>
+  <body>
+    <div style="text-align:center;font-size:28px;font-family:黑体">象棋小巫师</div>
+    <div style="height:16px"></div>
+    <div style="text-align:center;white-space:nowrap">
+      <span class="td" style="margin-right:10px">
+        <div id="container"></div>
+      </span><span class="td" style="vertical-align:top;width:120px;"><div style="text-align:left">
+        <div class="label">谁先走</div>
+        <div><select id="selMoveMode" size="3">
+          <option selected value="0">我先走</option>
+          <option value="1">电脑先走</option>
+          <option value="2">不用电脑</option>
+        </select></div>
+        <div class="label">先走让子</div>
+        <div><select id="selHandicap" style="padding:0px">
+          <option selected value="0">不让子</option>
+          <option value="1">让左马</option>
+          <option value="2">让双马</option>
+          <option value="3">让九子</option>
+        </select></div>
+        <div style="padding-top:2px"><input type="button" class="button" value="重新开始" onclick="restart_click()"></div>
+        <div style="padding-top:2px"><input type="button" class="button" value="悔棋" onclick="retract_click()"></div>
+        <div style="height:12px"></div>
+        <div class="label">电脑水平</div>
+        <div><select id="selLevel" size="3" onchange="level_change()">
+          <option selected value="0">入门</option>
+          <option value="1">业余</option>
+          <option value="2">专业</option>
+        </select></div>
+        <div style="height:12px"></div>
+        <div><input type="checkbox" class="checkbox" id="chkAnimated" checked onclick="board.animated = checked"><label for="chkAnimated">动画</label></input></div>
+        <div><input type="checkbox" class="checkbox" checked onclick="board.setSound(checked)"><label for="chkSound">音效</label></input></div>
+        <div style="height:60px"></div>
+        <div class="label">步骤</div>
+        <div><select id="selMoveList" size="10" style="font-family:宋体" onchange="moveList_change()">
+          <option selected value="0">=== 开始 ===</option>
+        </select></div>
+      </div></span>
+    </div>
+    <script type="text/javascript"><!--
+"use strict";
+
+var STARTUP_FEN = [
+  "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w",
+  "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKAB1R w",
+  "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/R1BAKAB1R w",
+  "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/9/1C5C1/9/RN2K2NR w",
+];
+
+function createOption(text, value, ie8) {
+  var opt = document.createElement("option");
+  opt.selected = true;
+  opt.value = value;
+  if (ie8) {
+    opt.text = text;
+  } else {
+    opt.innerHTML = text.replace(/ /g, "&nbsp;");
+  }
+  return opt;
+}
+
+var board = new Board(container, "images/", "sounds/");
+board.setSearch(16);
+board.millis = 10;
+board.computer = 1;
+board.onAddMove = function() {
+  var counter = (board.pos.mvList.length >> 1);
+  var space = (counter > 99 ? "    " : "   ");
+  counter = (counter > 9 ? "" : " ") + counter + ".";
+  var text = (board.pos.sdPlayer == 0 ? space : counter) + move2Iccs(board.mvLast);
+  var value = "" + board.mvLast;
+  try {
+    selMoveList.add(createOption(text, value, false));
+  } catch (e) {
+    selMoveList.add(createOption(text, value, true));
+  }
+  selMoveList.scrollTop = selMoveList.scrollHeight;
+};
+
+function level_change() {
+  board.millis = Math.pow(10, selLevel.selectedIndex + 1);
+}
+
+function restart_click() {
+  selMoveList.options.length = 1;
+  selMoveList.selectedIndex = 0;
+  board.computer = 1 - selMoveMode.selectedIndex;
+  board.restart(STARTUP_FEN[selHandicap.selectedIndex]);
+}
+
+function retract_click() {
+  for (var i = board.pos.mvList.length; i < selMoveList.options.length; i ++) {
+    board.pos.makeMove(parseInt(selMoveList.options[i].value));
+  }
+  board.retract();
+  selMoveList.options.length = board.pos.mvList.length;
+  selMoveList.selectedIndex = selMoveList.options.length - 1;
+}
+
+function moveList_change() {
+  if (board.result == RESULT_UNKNOWN) {
+    selMoveList.selectedIndex = selMoveList.options.length - 1;
+    return;
+  }
+  var from = board.pos.mvList.length;
+  var to = selMoveList.selectedIndex;
+  if (from == to + 1) {
+    return;
+  }
+  if (from > to + 1) {
+    for (var i = to + 1; i < from; i ++) {
+      board.pos.undoMakeMove();
+    }
+  } else {
+    for (var i = from; i <= to; i ++) {
+      board.pos.makeMove(parseInt(selMoveList.options[i].value));
+    }
+  }
+  board.flushBoard();
+}
+    --></script>
+  </body>
+</html>

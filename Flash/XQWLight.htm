@@ -1,0 +1,86 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type"
+content="text/html; charset=gb_2312-80">
+<meta name="GENERATOR" content="Microsoft FrontPage Express 2.0">
+<title></title>
+</head>
+
+<body>
+<div align="center"><center>
+
+<table border="0" cellpadding="0">
+    <tr>
+        <td background="boards/wood.gif"><object id="XQWLight"
+        classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+        codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0"
+        align="middle" border="0" width="520" height="576"><param
+        name="wmode" value="transparent"><param
+        name="allowScriptAccess" value="always"><param
+        name="allowFullScreen" value="false"><param name="movie"
+        value="XQWLight.swf"><param name="quality" value="high"><param
+        name="menu" value="false"><embed src="XQWLight.swf" name="XQWLight" align="middle" border="0" width="520" height="576" wmode="transparent" quality="high" allowscriptaccess="always" allowfullscreen="false" menu="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" /></object></td>
+        <td>　</td>
+        <td valign="top"><dl>
+            <dt><script language="JavaScript"><!--
+var XQWLight = document["XQWLight"];
+
+var startupFens = [
+  "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w",
+  "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKAB1R w",
+  "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/R1BAKAB1R w",
+  "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/9/1C5C1/9/RN2K2NR w",
+];
+
+function restart_click() {
+  XQWLight.restart(selMoveMode.selectedIndex, startupFens[selHandicap.selectedIndex]);
+}
+
+function retract_click() {
+  XQWLight.retract();
+}
+
+function level_change() {
+  XQWLight.setLevel(selLevel.selectedIndex);
+}
+
+function sound_click() {
+  XQWLight.setSound(chkSound.checked);
+}
+// --></script><font
+                size="2">谁先走：</font></dt>
+            <dt><font size="2"><select name="selMoveMode" id="selMoveMode" size="3">
+                    <option selected value="0">我先走　</option>
+                    <option value="1">电脑先走</option>
+                    <option value="2">不用电脑</option>
+                </select></font></dt>
+            <dt><font size="2">先走让子：</font></dt>
+            <dt><font size="2"><select name="selHandicap" id="selHandicap"
+                size="4">
+                    <option selected value="0">不让子　</option>
+                    <option value="1">让左马　</option>
+                    <option value="2">让双马　</option>
+                    <option value="3">让九子　</option>
+                </select></font></dt>
+            <dt><font color="#008080" size="2"><strong><input
+                type="button" value="重新开始" onclick="restart_click()"></strong></font></dt>
+            <dt><font color="#008080" size="2"><strong><input
+                type="button" value="　悔棋　" onclick="retract_click()"></strong></font></dt>
+            <dt><font size="2"></font>　</dt>
+            <dt><font size="2">电脑水平：</font></dt>
+            <dt><font size="2"><select name="selLevel" id="selLevel" size="3" onchange="level_change()">
+                    <option selected value="0">入门　　</option>
+                    <option value="1">业余　　</option>
+                    <option value="2">专业　　</option>
+                </select></font></dt>
+            <dt><font size="2"></font>　</dt>
+            <dt><font size="2"><input type="checkbox" checked
+                name="chkSound" id="chkSound" onclick="sound_click()"><label for="chkSound">音效</label></font></dt>
+        </dl>
+        </td>
+    </tr>
+</table>
+</center></div>
+</body>
+</html>

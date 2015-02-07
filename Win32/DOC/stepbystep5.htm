@@ -1,0 +1,205 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type"
+content="text/html; charset=gb_2312-80">
+<meta name="GENERATOR" content="Microsoft FrontPage Express 2.0">
+<title>电脑象棋循序渐进(五)：质的飞跃</title>
+</head>
+
+<body background="background.gif">
+
+<dl>
+    <div align="center"><center>
+    <dt><font size="6" face="隶书">电脑象棋循序渐进</font></dt>
+    </center></div><div align="center"><center>
+    <dt>　</dt>
+    </center></div><div align="center"><center>
+    <dt>象棋百科全书网 <font face="Times New Roman">(</font><a
+        href="mailto:webmaster@xqbase.com"><font
+        face="Times New Roman">webmaster@xqbase.com</font></a><font
+        face="Times New Roman">)</font>　<font
+        face="Times New Roman">2008</font>年<font
+        face="Times New Roman">4</font>月</dt>
+    </center></div>
+    <dt>　</dt>
+    <dt><font size="5" face="Arial"><strong>(</strong></font><font
+        size="5" face="楷体_GB2312"><strong>五</strong></font><font
+        size="5" face="Arial"><strong>) </strong></font><font
+        size="5" face="楷体_GB2312"><strong>质的飞跃</strong></font></dt>
+    <dt>　</dt>
+    <dt>　　与本文配套的示范程序是“象棋小巫师”<font
+        face="Times New Roman">0.5</font>版，程序清单是：</dt>
+    <dt>　　<font face="Times New Roman">(1) XQWL05.CPP</font>——<font
+        face="Times New Roman">C++</font>源程序；</dt>
+    <dt>　　<font face="Times New Roman">(2) XQWLIGHT.RC</font>——资源描述文件；</dt>
+    <dt>　　<font face="Times New Roman">(3) RESOURCE.H</font>——资源符号定义文件；</dt>
+    <dt>　　<font face="Times New Roman">(4) RES</font>目录——图标、图片、声音等资源。</dt>
+    <dt>　</dt>
+    <dt>　　在阅读本章前，建议读者先阅读象棋百科全书网计算机博弈专栏的以下几篇译文：</dt>
+    <dt><font size="3">　　</font><font size="3"
+        face="Times New Roman">(1) </font><a
+        href="http://www.xqbase.com/computer/search_intro3.htm"
+        target="_blank"><font size="3">基本搜索方法——简介</font><font
+        size="3" face="Times New Roman">(</font><font size="3">三</font><font
+        size="3" face="Times New Roman">)</font></a><font
+        face="Times New Roman">(David Eppstein)</font><font
+        size="3">；</font></dt>
+    <dt><font size="3">　　</font><font size="3"
+        face="Times New Roman">(2) </font><a
+        href="http://www.xqbase.com/computer/search_hashing.htm"
+        target="_blank"><font size="3">基本搜索方法——置换表</font></a><font
+        face="Times New Roman">(Bruce Moreland)</font>；</dt>
+    <dt><font size="3">　　</font><font size="3"
+        face="Times New Roman">(3) </font><a
+        href="http://www.xqbase.com/computer/other_winning.htm"
+        target="_blank"><font size="3">其他策略——胜利局面</font></a><font
+        face="Times New Roman">(Bruce Moreland)</font><font
+        size="3">。</font></dt>
+    <dt>　</dt>
+    <dt><font size="4" face="Arial"><strong>5.1 </strong></font><font
+        size="4" face="楷体_GB2312"><strong>置换表</strong></font></dt>
+    <dt>　</dt>
+    <dt>　　没有置换表，就称不上是完整的计算机博弈程序。</dt>
+    <dt>　　象棋小巫师的置换表非常简单，以局面的
+        <font face="Times New Roman">Zobrist Key % HASH_SIZE </font>作为索引值。每个置换表项存储的内容无非就是：<font
+        face="Times New Roman">A. </font>深度，<font
+        face="Times New Roman">B. </font>标志，<font
+        face="Times New Roman">C. </font>分值，<font
+        face="Times New Roman">D. </font>最佳走法，<font
+        face="Times New Roman">E. Zobrist Lock</font> 校验码。置换表的处理函数也很传统——一个
+        <font face="Times New Roman">ProbeHash </font>和一个 <font
+        face="Times New Roman">RecordHash </font>就足够了。</dt>
+    <dt>　　先说 <font face="Times New Roman">RecordHash</font>，即便采用深度优先的替换策略，<font
+        face="Times New Roman">RecordHash </font>也非常简单，在判断深度后，将
+        <font face="Times New Roman">Hash </font>表项中的每个值填上就是了。</dt>
+    <dt>　　再看看 <font face="Times New Roman">ProbeHash </font>是如何利用置换表信息的：</dt>
+    <dt>　　<font face="Times New Roman">(1) </font>检查局面所对应的置换表项，如果
+        <font face="Times New Roman">Zobrist Lock </font>校验码匹配，那么我们就认为命中<font
+        face="Times New Roman">(Hit)</font>了；</dt>
+    <dt>　　<font face="Times New Roman">(2) </font>是否能直接利用置换表中的结果，取决于两个因素：<font
+        face="Times New Roman">A. </font>深度是否达到要求，<font
+        face="Times New Roman">B. </font>非<font
+        face="Times New Roman">PV</font>节点还需要考虑边界。</dt>
+    <dt>　　第二种情况是最好的<font
+        face="Times New Roman">(</font>完全利用<font
+        face="Times New Roman">)</font>，<font
+        face="Times New Roman">ProbeHash </font>返回一个非 <font
+        face="Times New Roman">-MATE_VALUE </font>的值，这样就能不对该节点进行展开了。</dt>
+    <dt>　　如果仅仅符合第一种情况，那么该置换表项的信息仍旧是有意义的——它的最佳走法给了我们一定的启发<font
+        face="Times New Roman">(</font>部分利用<font
+        face="Times New Roman">)</font>。</dt>
+    <dt>　</dt>
+    <dt><font size="4" face="Arial"><strong>5.2 </strong></font><font
+        size="4" face="楷体_GB2312"><strong>杀棋分数调整</strong></font></dt>
+    <dt>　</dt>
+    <dt>　　象棋小巫师从学会走棋开始，就已经考虑了杀棋分数。不过增加了置换表以后，这个分数要进行调整——置换表中的分值不能是距离根节点的杀棋分值，而是距离当前<font
+        face="Times New Roman">(</font>置换表项<font
+        face="Times New Roman">)</font>节点的分值。所以当分值接近
+        <font face="Times New Roman">INFINITY </font>或 <font
+        face="Times New Roman">-INFINITY </font>时，<font
+        face="Times New Roman">ProbeHash </font>和 <font
+        face="Times New Roman">RecordHash </font>都要做细微的调整：</dt>
+    <dt>　　<font face="Times New Roman">(1) </font>对于<font
+        face="Times New Roman">RecordHash</font>：置换表项记录的杀棋步数
+        <font face="Times New Roman">= </font>实际杀棋步数 <font
+        face="Times New Roman">- </font>置换表项距离根节点的步数；</dt>
+    <dt>　　<font face="Times New Roman">(2) </font>对于<font
+        face="Times New Roman">ProbeHash</font>：实际杀棋步数
+        <font face="Times New Roman">= </font>置换表项记录的杀棋步数
+        <font face="Times New Roman">+ </font>置换表项距离根节点的步数。</dt>
+    <dt>　</dt>
+    <dt><font size="4" face="Arial"><strong>5.3 </strong></font><font
+        size="4" face="楷体_GB2312"><strong>杀手</strong></font><font
+        size="4" face="Arial"><strong>(Killer)</strong></font><font
+        size="4" face="楷体_GB2312"><strong>走法</strong></font></dt>
+    <dt>　</dt>
+    <dt>　　把这个术语取名为<font
+        face="Times New Roman">Killer</font>真是有些奇怪，但我们还是沿用这个术语。</dt>
+    <dt>　　杀手走法就是兄弟节点中产生<font
+        face="Times New Roman">Beta</font>截断的走法。根据国际象棋的经验，杀手走法产生截断的可能性极大，所以我们在中国象棋里吸取了这个经验。很显然，兄弟节点中的走法未必在当前节点下能走，所以在尝试杀手走法以前先要对它进行走法合理性的判断。我们在<font
+        face="Times New Roman">0.2</font>版中就写过 <font
+        face="Times New Roman">LegalMove </font>这个函数，这里它将大显身手。如果杀手走法确实产生截断了，那么后面耗时更多的
+        <font face="Times New Roman">GenerateMove </font>就可以不用执行了。</dt>
+    <dt>　　如何保存和获取“兄弟节点中产生截断的走法”呢？我们可以把这个问题简单化——距离根节点步数<font
+        face="Times New Roman">(nDistance)</font>同样多的节点，彼此都称为“兄弟”节点，换句话说，亲兄弟、堂表兄弟以及关系更疏远的兄弟都称为“兄弟”。</dt>
+    <dt>　　我们可以把距离根节点的步数<font
+        face="Times New Roman">(nDistance)</font>作为索引值，构造一个杀手走法表。象棋小巫师的每个杀手走法表项存有两个杀手走法，走法一比走法二优先：存一个走法时，走法二被走法一替换，走法一被新走法替换；取走法时，先取走法一，后取走法二。</dt>
+    <dt>　</dt>
+    <dt><font size="4" face="Arial"><strong>5.4 </strong></font><font
+        size="4" face="楷体_GB2312"><strong>优化走法顺序</strong></font></dt>
+    <dt>　</dt>
+    <dt>　　利用各种信息渠道<font
+        face="Times New Roman">(</font>如置换表、杀手走法、历史表等<font
+        face="Times New Roman">)</font>来优化走法顺序的手段称为“启发”。象棋小巫师<font
+        face="Times New Roman">0.5</font>以前，我们只用历史表作启发，但从这个版本开始，我们采用了多种启发方式：</dt>
+    <dt>　　<font face="Times New Roman">(1) </font>如果置换表中有过该局面的数据，但无法完全利用，那么多数情况下它是浅一层搜索中产生截断的走法，我们可以首先尝试它；</dt>
+    <dt>　　<font face="Times New Roman">(2) </font>然后是两个杀手走法<font
+        face="Times New Roman">(</font>如果其中某个杀手走法与置换表走法一样，那么可以跳过<font
+        face="Times New Roman">)</font>；</dt>
+    <dt>　　<font face="Times New Roman">(3) </font>然后生成全部走法，按历史表排序，再依次搜索<font
+        face="Times New Roman">(</font>可以排除置换表走法和两个杀手走法<font
+        face="Times New Roman">)</font>。</dt>
+    <dt>　　这样，我们就可以构造一个状态机，来描述走法顺序的若干阶段：</dt>
+    <div align="center"><center>
+    <dt><img src="moveorder.gif" width="545" height="164"></dt>
+    </center></div>
+    <dt>　　我们把状态机写在一个叫 <font
+        face="Times New Roman">Next </font>的函数中，那么 <font
+        face="Times New Roman">Alpha-Beta </font>的循环体就是：</dt>
+    <dd>　</dd>
+    <dd>…… // 初始化状态机</dd>
+    <dd>while ((mv = Next()) != 0) {</dd>
+    <dd>　MakeMove(mv);</dd>
+    <dd>　…… // Alpha-Beta递归调用</dd>
+    <dd>　UndoMakeMove(mv);</dd>
+    <dd>　…… // Alpha-Beta边界判断</dd>
+    <dd>}</dd>
+    <dt>　</dt>
+    <dt>　　在 <font face="Times New Roman">Next </font>函数中，我们用了不带<font
+        face="Times New Roman">break</font>的<font
+        face="Times New Roman">switch ... case</font>结构：</dt>
+    <dd>　</dd>
+    <dd>switch (nPhase) {</dd>
+    <dd>case PHASE_HASH:</dd>
+    <dd>　nPhase = PHASE_KILLER_1;</dd>
+    <dd>　…… // 如果有置换表走法，就可以返回，再次调用就直接跳到
+        PHASE_KILLER_1</dd>
+    <dd>　// 注意：这里没有break！</dd>
+    <dd>case PHASE_KILLER_1:</dd>
+    <dd>　nPhase = PHASE_KILLER_2;</dd>
+    <dd>　……</dd>
+    <dd>}</dd>
+    <dt>　</dt>
+    <dt>　　这就是“基于置换表的启发式<font
+        face="Times New Roman">Alpha-Beta</font>搜索”，目前顶尖的电脑<font
+        face="Times New Roman">(</font>国际<font
+        face="Times New Roman">)</font>象棋程序都逃脱不了这种架构，只不过它们在置换表和启发算法上更加优化而已。</dt>
+</dl>
+
+<dir>
+    <li>上一篇　<a href="stepbystep4.htm">电脑象棋循序渐进<font
+        face="Times New Roman">(</font>四<font
+        face="Times New Roman">)</font>：稍微聪明些了</a></li>
+    <li>下一篇　<a href="stepbystep6.htm">电脑象棋循序渐进<font
+        face="Times New Roman">(</font>六<font
+        face="Times New Roman">)</font>：精益求精</a></li>
+</dir>
+<div align="center"><center>
+
+<table border="0">
+    <tr>
+        <td><p align="center"><a
+        href="http://www.xqbase.com/" target="_blank"><img
+        src="xqbase.gif" border="0" width="88"
+        height="31"></a></p>
+        </td>
+    </tr>
+    <tr>
+        <td><a href="http://www.xqbase.com/"
+        target="_blank"><font size="2" face="Arial"><strong>www.xqbase.com</strong></font></a></td>
+    </tr>
+</table>
+</center></div>
+</body>
+</html>

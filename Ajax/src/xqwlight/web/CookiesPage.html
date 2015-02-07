@@ -1,0 +1,41 @@
+<html>
+  <head>
+    <title>Cookies</title>
+  </head>
+  <body background="images/background.gif">
+    <p align="center">
+      <font color="#008080" size="5">
+        <strong>Cookies</strong>
+      </font>
+    </p>
+    <form wicket:id="frm">
+      <table align="center" border="1">
+        <tr>
+          <th>Name</th>
+          <th>=</th>
+          <th>Value</th>
+          <th>
+            <input type="submit" value="Insert" wicket:id="btnInsert" />
+          </th>
+        </tr>
+        <tr wicket:id="lstCookies">
+          <td align="center"><input type="text" size="10" wicket:id="txtName" /></td>
+          <td align="center">=</td>
+          <td align="center"><input type="text" size="50" wicket:id="txtValue" /></td>
+          <td align="center">
+            <input type="submit" value="Delete" wicket:id="btnDelete" />
+          </td>
+        </tr>
+      </table>
+      <p align="center">
+        <a href="#" onclick="submit()">
+          <font size="4">
+            <strong>
+              <span wicket:id="lblGoto"></span>
+            </strong>
+          </font>
+        </a>
+      </p>
+    </form>
+  </body>
+</html>

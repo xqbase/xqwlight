@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mtjMetadata jad="XQWLight.jad" version="1.2.1.201101310801">
+   <device group="Sun Java(TM) Wireless Toolkit 2.5.1 for CLDC" name="DefaultColorPhone"/>
+   <signing projectSpecific="false" signProject="false">
+      <alias/>
+   </signing>
+   <configurations>
+      <configuration active="true" name="DefaultColorPhone">
+         <device group="Sun Java(TM) Wireless Toolkit 2.5.1 for CLDC" name="DefaultColorPhone"/>
+         <symbolSet name="DefaultColorPhone">
+            <symbol name="MMAPI" value="1.1"/>
+            <symbol name="screen.isColor" value="true"/>
+            <symbol name="screen.bitDepth" value="8"/>
+            <symbol name="JSR82" value="1.1"/>
+            <symbol name="JSR226" value="1.0"/>
+            <symbol name="MIDP" value="2.1"/>
+            <symbol name="JSR229" value="1.1"/>
+            <symbol name="SATSA-PKI" value="1.0"/>
+            <symbol name="CLDC" value="1.1"/>
+            <symbol name="JSR179" value="1.0"/>
+            <symbol name="SATSA-JCRMI" value="1.0"/>
+            <symbol name="WMA" value="2.0"/>
+            <symbol name="J2ME-WS" value="1.0"/>
+            <symbol name="screen.width" value="240"/>
+            <symbol name="JSR238" value="1.0"/>
+            <symbol name="JSR239" value="1.0"/>
+            <symbol name="screen.isTouch" value="true"/>
+            <symbol name="JSR211" value="1.0"/>
+            <symbol name="JSR234" value="1.0"/>
+            <symbol name="SATSA-APDU" value="1.0"/>
+            <symbol name="JSR75" value="1.0"/>
+            <symbol name="J2ME-XMLRPC" value="1.0"/>
+            <symbol name="JSR184" value="1.1"/>
+            <symbol name="SATSA-CRYPTO" value="1.0"/>
+            <symbol name="version.configuration" value="CLDC-1.1"/>
+            <symbol name="version.profile" value="MIDP-2.1"/>
+            <symbol name="JSR180" value="1.0"/>
+            <symbol name="screen.height" value="320"/>
+         </symbolSet>
+      </configuration>
+   </configurations>
+</mtjMetadata>

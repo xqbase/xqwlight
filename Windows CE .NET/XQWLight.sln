@@ -1,0 +1,23 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{CB4CE8C6-1BDB-4DC7-A4D3-65A1999772F8}") = "XQWLight", "XQWLight.vbdproj", "{F432BD11-C92B-42EC-A0B7-10CF4D60D5C6}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{F432BD11-C92B-42EC-A0B7-10CF4D60D5C6}.Debug.ActiveCfg = Debug|Windows CE
+		{F432BD11-C92B-42EC-A0B7-10CF4D60D5C6}.Debug.Build.0 = Debug|Windows CE
+		{F432BD11-C92B-42EC-A0B7-10CF4D60D5C6}.Debug.Deploy.0 = Debug|Windows CE
+		{F432BD11-C92B-42EC-A0B7-10CF4D60D5C6}.Release.ActiveCfg = Release|Windows CE
+		{F432BD11-C92B-42EC-A0B7-10CF4D60D5C6}.Release.Build.0 = Release|Windows CE
+		{F432BD11-C92B-42EC-A0B7-10CF4D60D5C6}.Release.Deploy.0 = Release|Windows CE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

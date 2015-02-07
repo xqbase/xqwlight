@@ -1,0 +1,198 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type"
+content="text/html; charset=gb_2312-80">
+<meta name="GENERATOR" content="Microsoft FrontPage Express 2.0">
+<title>电脑象棋循序渐进(四)：稍微聪明些了</title>
+</head>
+
+<body background="background.gif">
+
+<dl>
+    <div align="center"><center>
+    <dt><font size="6" face="隶书">电脑象棋循序渐进</font></dt>
+    </center></div><div align="center"><center>
+    <dt>　</dt>
+    </center></div><div align="center"><center>
+    <dt>象棋百科全书网 <font face="Times New Roman">(</font><a
+        href="mailto:webmaster@xqbase.com"><font
+        face="Times New Roman">webmaster@xqbase.com</font></a><font
+        face="Times New Roman">)</font>　<font
+        face="Times New Roman">2008</font>年<font
+        face="Times New Roman">4</font>月</dt>
+    </center></div>
+    <dt>　</dt>
+    <dt><font size="5" face="Arial"><strong>(</strong></font><font
+        size="5" face="楷体_GB2312"><strong>四</strong></font><font
+        size="5" face="Arial"><strong>) </strong></font><font
+        size="5" face="楷体_GB2312"><strong>稍微聪明些了</strong></font></dt>
+    <dt>　</dt>
+    <dt>　　与本文配套的示范程序是“象棋小巫师”<font
+        face="Times New Roman">0.4</font>版，程序清单是：</dt>
+    <dt>　　<font face="Times New Roman">(1) XQWL04.CPP</font>——<font
+        face="Times New Roman">C++</font>源程序；</dt>
+    <dt>　　<font face="Times New Roman">(2) XQWLIGHT.RC</font>——资源描述文件；</dt>
+    <dt>　　<font face="Times New Roman">(3) RESOURCE.H</font>——资源符号定义文件；</dt>
+    <dt>　　<font face="Times New Roman">(4) RES</font>目录——图标、图片、声音等资源。</dt>
+    <dt>　</dt>
+    <dt>　　在阅读本章前，建议读者先阅读象棋百科全书网计算机博弈专栏的以下几篇译文：</dt>
+    <dt><font size="3">　　</font><font size="3"
+        face="Times New Roman">(1) </font><a
+        href="http://www.xqbase.com/computer/basic_advanced.htm"
+        target="_blank"><font size="3">国际象棋程序设计(五)：高级搜索方法</font></a><font
+        size="3" face="Times New Roman">(</font><font
+        face="Times New Roman">Fran</font>&ccedil;<font
+        face="Times New Roman">ois Dominic Laram</font>&eacute;<font
+        face="Times New Roman">e)</font>；</dt>
+    <dt>　　<font face="Times New Roman">(2) </font><a
+        href="http://www.xqbase.com/computer/struct_zobrist.htm"
+        target="_blank"><font size="3">数据结构——</font><font
+        size="3" face="Times New Roman">Zobrist</font><font
+        size="3">键值</font></a><font face="Times New Roman">(Bruce
+        Moreland)</font>；</dt>
+    <dt>　　<font face="Times New Roman">(3) </font><a
+        href="http://www.xqbase.com/computer/search_intro2.htm"
+        target="_blank">基本搜索方法——简介<font
+        face="Times New Roman">(</font>二<font
+        face="Times New Roman">)</font></a><font
+        face="Times New Roman">(David Eppstein)</font>；</dt>
+    <dt>　　<font size="3" face="Times New Roman">(4) </font><a
+        href="http://www.xqbase.com/computer/advanced_intro1.htm"
+        target="_blank"><font size="3">高级搜索方法——简介</font><font
+        size="3" face="Times New Roman">(</font><font size="3">一</font><font
+        size="3" face="Times New Roman">)</font></a><font
+        face="Times New Roman">(David Eppstein)</font>；</dt>
+    <dt>　　<font size="3" face="Times New Roman">(5) </font><a
+        href="http://www.xqbase.com/computer/advanced_quiescent.htm"
+        target="_blank"><font size="3">高级搜索方法——静态搜索</font></a><font
+        face="Times New Roman">(Bruce Moreland)</font>；</dt>
+    <dt>　　<font size="3" face="Times New Roman">(6) </font><a
+        href="http://www.xqbase.com/computer/advanced_nullmove.htm"
+        target="_blank"><font size="3">高级搜索方法——空着裁剪</font></a><font
+        face="Times New Roman">(Bruce Moreland)</font>；</dt>
+    <dt>　　<font face="Times New Roman">(7) </font><a
+        href="http://www.xqbase.com/computer/other_repetition.htm"
+        target="_blank"><font size="3">其他策略——重复检测</font></a><font
+        face="Times New Roman">(Bruce Moreland)</font>。</dt>
+    <dt>　</dt>
+    <dt>　　我们的程序终于会走棋了，不过很多时候它很低能。由于水平线效应，任何变化都只搜索固定的深度。还有，有时它会长将。我们能做哪些改进呢？</dt>
+    <dt>　</dt>
+    <dt><font size="4" face="Arial"><strong>4.1 </strong></font><font
+        size="4" face="楷体_GB2312"><strong>克服水平线效应</strong></font></dt>
+    <dt>　</dt>
+    <dt>　　克服水平线效应的方法有以下几种：</dt>
+    <dt>　　<font face="Times New Roman">(1) </font>静态<font
+        face="Times New Roman">(Quiescence)</font>搜索。进入静态搜索时，要考虑两种情况，一是不被将军的情况，首先尝试不走是否能够截断，然后搜索所有吃子的走法<font
+        face="Times New Roman">(</font>可以按照<font
+        face="Times New Roman">MVV/LVA</font>排序<font
+        face="Times New Roman">)</font>；二是被将军的情况，这时就必须生成所有的走法了<font
+        face="Times New Roman">(</font>可以按照历史表排序<font
+        face="Times New Roman">)</font>。</dt>
+    <dt>　　<font face="Times New Roman">(2) </font>空步<font
+        face="Times New Roman">(Null-Move)</font>裁剪。空步裁剪的代码非常简单，但某些条件下并不适用，一是被将军的情况下，二是进入残局时<font
+        face="Times New Roman">(</font>自己一方的子力总价值小于某个阈值<font
+        face="Times New Roman">)</font>，三是不要连续做两次空步裁剪，否则会导致搜索的退化。</dt>
+    <dt>　　<font face="Times New Roman">(3) </font>将军延伸。</dt>
+    <dt>　</dt>
+    <dt><font size="4" face="Arial"><strong>4.2 </strong></font><font
+        size="4" face="楷体_GB2312"><strong>检查重复局面</strong></font></dt>
+    <dt>　</dt>
+    <dt>　　在象棋小巫师的前几个版本中，重复局面判断不是必须的，因为任何变化都只搜索固定的深度。但是静态搜索和将军延伸会带来一个问题——遇到“解将还将”的局面，搜索就会无止境地进行下去，直到程序崩溃。</dt>
+    <dt>　　有两个办法可以解决这个问题：</dt>
+    <dt>　　<font face="Times New Roman">(1) </font>限制实际搜索深度<font
+        face="Times New Roman">(</font>通过 <font
+        face="Times New Roman">nDistance </font>来限制<font
+        face="Times New Roman">)</font>；</dt>
+    <dt>　　<font face="Times New Roman">(2) </font>自动识别重复局面，遇到这样的局面就根据规则返回和棋或杀棋的分数。</dt>
+    <dt>　　前者实现起来非常简单，我们的程序也这样做了，但仍旧使程序做了很多无用的搜索。在这个版本中，我们重点把力气花在检查重复局面上了。</dt>
+    <dt>　　检查重复局面的办法很简单，每走一个走法就把当前局面的校验码记录下来，再看看前几个局面的校验码是否与当前值相等。当重复局面发生时，就要根据双方的将军情况来判定胜负——单方面长将者判负<font
+        face="Times New Roman">(</font>返回杀棋分数而不必要继续搜索了<font
+        face="Times New Roman">)</font>，双长将或双方都存在非将走法则判和<font
+        face="Times New Roman">(</font>返回和棋分数<font
+        face="Times New Roman">)</font>。</dt>
+    <dt>　　象棋小巫师用了一个 <font
+        face="Times New Roman">RepStatus </font>函数来检查重复，如果局面存在重复，那么它的返回值将很有意思：</dt>
+    <dd>　</dd>
+    <dd>return 1 + (bPerpCheck ? 2 : 0) + (bOppPerpCheck ? 4 : 0);</dd>
+    <dt>　</dt>
+    <dt>　　起初<font face="Times New Roman">bPerpCheck(</font>本方长将<font
+        face="Times New Roman">)</font>和<font
+        face="Times New Roman">bOppPerpCheck(</font>对方长将<font
+        face="Times New Roman">)</font>都设为<font
+        face="Times New Roman">TRUE</font>，当一方存在非将走法时就改为<font
+        face="Times New Roman">FALSE</font>，这样 <font
+        face="Times New Roman">RepStatus </font>的返回值有有这几种可能：</dt>
+    <dt>　　<font face="Times New Roman">A. </font>返回<font
+        face="Times New Roman">0</font>，表示没有重复局面；</dt>
+    <dt>　　<font face="Times New Roman">B. </font>返回<font
+        face="Times New Roman">1</font>，表示存在重复局面，但双方都无长将<font
+        face="Times New Roman">(</font>判和<font
+        face="Times New Roman">)</font>；</dt>
+    <dt>　　<font face="Times New Roman">C. </font>返回<font
+        face="Times New Roman">3(=1+2)</font>，表示存在重复局面，本方单方面长将<font
+        face="Times New Roman">(</font>判本方负<font
+        face="Times New Roman">)</font>；</dt>
+    <dt>　　<font face="Times New Roman">D. </font>返回<font
+        face="Times New Roman">5(=1+4)</font>，表示存在重复局面，对方单方面长将<font
+        face="Times New Roman">(</font>判对方负<font
+        face="Times New Roman">)</font>；</dt>
+    <dt>　　<font face="Times New Roman">E. </font>返回<font
+        face="Times New Roman">7(=1+2+4)</font>，表示存在重复局面，双方长将<font
+        face="Times New Roman">(</font>判和<font
+        face="Times New Roman">)</font>。</dt>
+    <dt>　</dt>
+    <dt><font size="4" face="Arial"><strong>4.3 Zobrist</strong></font><font
+        size="4" face="楷体_GB2312"><strong>校验码</strong></font></dt>
+    <dt>　</dt>
+    <dt>　　我们把<font face="Times New Roman">Zobrist</font>值作为局面的校验码，好处在于计算迅速。除了检查重复局面外，校验码还有以下作用：</dt>
+    <dt>　　<font face="Times New Roman">(1) </font>作为置换表<font
+        face="Times New Roman">(Hash</font>表<font
+        face="Times New Roman">)</font>的键值；</dt>
+    <dt>　　<font face="Times New Roman">(2) </font>作为开局库的查找依据。</dt>
+    <dt>　　象棋小巫师生成的<font
+        face="Times New Roman">Zobrist</font>校验码跟开源象棋程序
+        <font face="Times New Roman">ElephantEye </font>是一致的<font
+        face="Times New Roman">(</font>以空密钥的<font
+        face="Times New Roman">RC4</font>密码流作为随机序列<font
+        face="Times New Roman">)</font>，这样就可以使用 <font
+        face="Times New Roman">ElephantEye </font>的开局库了。<font
+        face="Times New Roman">Zobrist</font>值总共<font
+        face="Times New Roman">96</font>位，放在 <font
+        face="Times New Roman">dwKey</font>、<font
+        face="Times New Roman">dwLock0 </font>和 <font
+        face="Times New Roman">dwLock1 </font>中，其中 <font
+        face="Times New Roman">dwKey </font>在检查重复局面时用，也作为置换表的键值，<font
+        face="Times New Roman">dwLock0 </font>和 <font
+        face="Times New Roman">dwLock1 </font>用作置换表的校验值，另外，<font
+        face="Times New Roman">dwLock1 </font>还是查找开局库的依据<font
+        face="Times New Roman">(</font>后面会提到<font
+        face="Times New Roman">)</font>。</dt>
+</dl>
+
+<dir>
+    <li>上一篇　<a href="stepbystep3.htm">电脑象棋循序渐进<font
+        face="Times New Roman">(</font>三<font
+        face="Times New Roman">)</font>：最初级的人工智能</a></li>
+    <li>下一篇　<a href="stepbystep5.htm">电脑象棋循序渐进<font
+        face="Times New Roman">(</font>五<font
+        face="Times New Roman">)</font>：质的飞跃</a></li>
+</dir>
+<div align="center"><center>
+
+<table border="0">
+    <tr>
+        <td><p align="center"><a
+        href="http://www.xqbase.com/" target="_blank"><img
+        src="xqbase.gif" border="0" width="88"
+        height="31"></a></p>
+        </td>
+    </tr>
+    <tr>
+        <td><a href="http://www.xqbase.com/"
+        target="_blank"><font size="2" face="Arial"><strong>www.xqbase.com</strong></font></a></td>
+    </tr>
+</table>
+</center></div>
+</body>
+</html>

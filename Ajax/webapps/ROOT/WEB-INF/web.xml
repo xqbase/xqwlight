@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5"
+    xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_5.xsd">
+  <display-name>象棋小巫师</display-name>
+<!--
+  <context-param>
+    <param-name>configuration</param-name>
+    <param-value>deployment</param-value>
+  </context-param>
+-->
+  <filter>
+    <filter-name>XQWLightApp</filter-name>
+    <filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
+    <init-param>
+      <param-name>applicationClassName</param-name>
+      <param-value>xqwlight.XQWLightApp</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </filter>
+  <filter-mapping>
+    <filter-name>XQWLightApp</filter-name>
+    <url-pattern>/app/*</url-pattern>
+  </filter-mapping>
+</web-app>

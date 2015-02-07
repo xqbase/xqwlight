@@ -1,0 +1,36 @@
+[Version]
+Signature = "$Chicago$"
+AdvancedINF=2.5
+
+[DefaultInstall]
+CopyFiles=files
+RegisterOCXs=RegisterFiles
+
+[DefaultUninstall]
+cleanup=1
+Delfiles=files
+UnRegisterOCXs=RegisterFiles
+
+[SourceDisksNames]
+1 = %DiskName%,"xqwlight.ocx",0
+
+[SourceDisksFiles]
+xqwlight.ocx=1
+
+[RegisterFiles]
+%11%\xqwlight\xqwlight.ocx
+
+[xqwlight.ocx]
+file-win32-x86=thiscab
+clsid={3C3335F5-6C1C-4E1A-8219-94B713446DB7}
+RegisterServer=yes
+FileVersion=1,0,0,1
+
+[DestinationDirs]
+files=11, xqwlight
+
+[files]
+xqwlight.ocx
+
+[Strings]
+DiskName = "xqwlight"

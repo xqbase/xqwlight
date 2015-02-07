@@ -1,0 +1,169 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type"
+content="text/html; charset=gb_2312-80">
+<meta name="GENERATOR" content="Microsoft FrontPage Express 2.0">
+<title>电脑象棋循序渐进(六)：精益求精</title>
+</head>
+
+<body background="background.gif">
+
+<dl>
+    <div align="center"><center>
+    <dt><font size="6" face="隶书">电脑象棋循序渐进</font></dt>
+    </center></div><div align="center"><center>
+    <dt>　</dt>
+    </center></div><div align="center"><center>
+    <dt>象棋百科全书网 <font face="Times New Roman">(</font><a
+        href="mailto:webmaster@xqbase.com"><font
+        face="Times New Roman">webmaster@xqbase.com</font></a><font
+        face="Times New Roman">)</font>　<font
+        face="Times New Roman">2008</font>年<font
+        face="Times New Roman">4</font>月</dt>
+    </center></div>
+    <dt>　</dt>
+    <dt><font size="5" face="Arial"><strong>(</strong></font><font
+        size="5" face="楷体_GB2312"><strong>六</strong></font><font
+        size="5" face="Arial"><strong>) </strong></font><font
+        size="5" face="楷体_GB2312"><strong>精益求精</strong></font></dt>
+    <dt>　</dt>
+    <dt>　　与本文配套的示范程序是“象棋小巫师”<font
+        face="Times New Roman">0.6</font>版，程序清单是：</dt>
+    <dt>　　<font face="Times New Roman">(1) XQWL06.CPP</font>——<font
+        face="Times New Roman">C++</font>源程序；</dt>
+    <dt>　　<font face="Times New Roman">(2) XQWLIGHT.RC</font>——资源描述文件；</dt>
+    <dt>　　<font face="Times New Roman">(3) RESOURCE.H</font>——资源符号定义文件；</dt>
+    <dt>　　<font face="Times New Roman">(4) RES</font>目录——图标、图片、声音等资源；</dt>
+    <dt>　　<font face="Times New Roman">(5) BOOK.DAT</font>——开局库文件。</dt>
+    <dt>　</dt>
+    <dt>　　在阅读本章前，建议读者先阅读象棋百科全书网计算机博弈专栏的以下几篇译文：</dt>
+    <dt><font size="3">　　</font><font size="3"
+        face="Times New Roman">(1) </font><a
+        href="http://www.xqbase.com/computer/advanced_pvs.htm"
+        target="_blank"><font size="3">高级搜索方法——主要变例搜索</font></a><font
+        size="3" face="Times New Roman">(</font><font
+        face="Times New Roman">Bruce Moreland</font><font
+        size="3" face="Times New Roman">)</font><font size="3">；</font></dt>
+    <dt><font size="3">　　</font><font size="3"
+        face="Times New Roman">(2) </font><a
+        href="http://www.xqbase.com/computer/advanced_instability.htm"
+        target="_blank"><font size="3">高级搜索方法——搜索的不稳定性</font></a><font
+        face="Times New Roman">(Bruce Moreland)</font>。</dt>
+    <dt>　</dt>
+    <dt>　　尽管我们的程序在架构上已经接近完整，但细节上存在不少问题：</dt>
+    <dt>　　<font face="Times New Roman">(1) </font>对于同一个局面，总是走固定的走法；</dt>
+    <dt>　　<font face="Times New Roman">(2) </font>搜索算法是否能更优化一些<font
+        face="Times New Roman">(</font>某些读者听说过<font
+        face="Times New Roman">PVS</font>、<font
+        face="Times New Roman">Nega-Scout</font>之类的算法<font
+        face="Times New Roman">)</font>；</dt>
+    <dt>　　<font face="Times New Roman">(3) </font>有些杀棋局面会走出莫名其妙的走法。</dt>
+    <dt>　　本章我们将把这些问题一一解决。</dt>
+    <dt>　</dt>
+    <dt><font size="4" face="Arial"><strong>6.1 </strong></font><font
+        size="4" face="楷体_GB2312"><strong>开局库</strong></font></dt>
+    <dt>　</dt>
+    <dt>　　开局库几乎是每个象棋程序必备的部件，它的好处是：</dt>
+    <dt>　　<font face="Times New Roman">(1) </font>即使再笨的程序，开局库能使得它们在开局阶段看上去不那么业余；</dt>
+    <dt>　　<font face="Times New Roman">(2) </font>通过随机选择走法，让开局灵活多变，增加对弈的趣味性。</dt>
+    <dt>　　象棋小巫师使用开源象棋程序 <font
+        face="Times New Roman">ElephantEye</font> 的开局库，开局库文件
+        <font face="Times New Roman">BOOK.DAT </font>的结构是：</dt>
+    <dd>　</dd>
+    <dd>struct BookItem {</dd>
+    <dd>　DWORD dwLock;</dd>
+    <dd>　WORD wmv, wvl;</dd>
+    <dd>} BookTable[BOOK_SIZE];</dd>
+    <dt>　</dt>
+    <dt>　　其中，<font face="Times New Roman">dwLock</font>
+        记录了局面 <font face="Times New Roman">Zobrist </font>校验码中的
+        <font face="Times New Roman">dwLock1</font>，<font
+        face="Times New Roman">wmv </font>是走法，<font
+        face="Times New Roman">wvl </font>是权重<font
+        face="Times New Roman">(</font>随机选择走法的几率，仅当两个相同的
+        <font face="Times New Roman">dwLock </font>有不同的 <font
+        face="Times New Roman">wmv </font>时，<font
+        face="Times New Roman">wvl </font>的值才有意义<font
+        face="Times New Roman">)</font>。</dt>
+    <dt>　　搜索一个局面时，首先不做<font
+        face="Times New Roman">Alpha-Beta</font>搜索，而是查找
+        <font face="Times New Roman">BookTable </font>中有没有对应的项，有的话就直接返回一个走法。由于
+        <font face="Times New Roman">ElephantEye </font>在制作开局库时是按照
+        <font face="Times New Roman">dwLock </font>排序的，因此可以用二分查找。找到一项以后，把它前后
+        <font face="Times New Roman">dwLock </font>相同的所有项都取出，从中随机选择一个
+        <font face="Times New Roman">wmv</font>。</dt>
+    <dt>　　<font face="Times New Roman">ElephantEye </font>为了压缩开局库的容量，所有对称的局面只用一项，所以当一个局面在
+        <font face="Times New Roman">BookTable </font>中找不到时，还应该试一下它的对称局面是否在
+        <font face="Times New Roman">BookTable </font>中。</dt>
+    <dt>　</dt>
+    <dt><font size="4" face="Arial"><strong>6.2 </strong></font><font
+        size="4" face="楷体_GB2312"><strong>根节点的特殊处理</strong></font></dt>
+    <dt>　</dt>
+    <dt>　　现在我们的程序一开局不会总是跳正马了，根据
+        <font face="Times New Roman">ElephantEye </font>提供的开局库，它大部分时候走中炮，有时也走仙人指路<font
+        face="Times New Roman">(</font>进兵<font
+        face="Times New Roman">)</font>或飞相。可是当它脱离开局库时，仍然摆脱不了思维的单一性，例如我们第一步走边兵<font
+        face="Times New Roman">(</font>开局库中当然没有这个局面<font
+        face="Times New Roman">)</font>，它仍旧只会跳同一边的正马。</dt>
+    <dt>　　一个解决办法是：在根节点处，让一个不是最好的走法也能在一定的几率取代前一个走法。我们的程序是这样写的：</dt>
+    <dd>　</dd>
+    <dd>if (vl &gt; vlBest) {</dd>
+    <dd>　vlBest = vl;</dd>
+    <dd>　对vlBest作小范围的随机浮动;</dd>
+    <dd>}</dd>
+    <dt>　</dt>
+    <dt>　　我们把根节点的搜索函数单独分离，这样做有很多好处：</dt>
+    <dt>　　<font face="Times New Roman">(1) </font>处理思考的随机性；</dt>
+    <dt>　　<font face="Times New Roman">(2) </font>没有必要尝试
+        <font face="Times New Roman">Beta </font>截断<font
+        face="Times New Roman">(</font>根节点处 <font
+        face="Times New Roman">Beta </font>始终是 <font
+        face="Times New Roman">+INFINITY)</font>；</dt>
+    <dt>　　<font face="Times New Roman">(3) </font>省略了检查重复局面、获取置换表、空步裁剪等步骤。</dt>
+    <dt>　</dt>
+    <dt><font size="4" face="Arial"><strong>6.3 PVS</strong></font></dt>
+    <dt>　</dt>
+    <dt>　　很多计算机博弈的资料都介绍了<font
+        face="Times New Roman">PVS</font>算法，但它只有当走法顺序充分优化时才能带来明显的好处，因此象棋小巫师直到最后一个版本才用了这种算法。</dt>
+    <dt>　</dt>
+    <dt><font size="4" face="Arial"><strong>6.4 </strong></font><font
+        size="4" face="楷体_GB2312"><strong>长将判负策略</strong></font></dt>
+    <dt>　</dt>
+    <dt>　　由于单方面长将不变作负的规则，<font
+        face="Times New Roman">0.6</font>以前的版本如果发生这种情况，想当然地给予<font
+        face="Times New Roman">-MATE_VALUE</font>的值，再根据杀棋步数作调整。但是由于长将判负并不是对某个单纯局面的评分，而是跟路线有关的，所以使用置换表时就会产生非常严重的后果——某个局面的信息可能来自另一条不同的路线。</dt>
+    <dt><font size="3">　　象棋小巫师的解决办法就是：获取置换表时把“利用</font>长将判负策略搜索到的局面”过滤掉。为此这个版本中我们把长将判负的局面定为<font
+        face="Times New Roman">BAN_VALUE(MATE_VALUE - 100)</font>，如果某个局面分值在<font
+        face="Times New Roman">WIN_VALUE(MATE_VALUE - 200)</font>和<font
+        face="Times New Roman">BAN_VALUE</font>之间，那么这个局面就是<font
+        size="3">“利用</font>长将判负策略搜索到的局面”。</dt>
+    <dt>　　我们仍旧把部分<font size="3">“利用</font>长将判负策略搜索到的局面”记录到置换表，因为这些局面提供的最佳走法是有启发价值的。反过来说，如果<font
+        size="3">“利用</font>长将判负策略搜索到的局面”没有最佳走法，那么这种局面就没有必要记录到置换表了。</dt>
+    <dt>　　经过这种处理，我们的程序在杀棋阶段不再会走出莫名其妙的走法了，最后一个疑难杂症终于攻克了。</dt>
+</dl>
+
+<dir>
+    <li>上一篇　<a href="stepbystep5.htm">电脑象棋循序渐进<font
+        face="Times New Roman">(</font>五<font
+        face="Times New Roman">)</font>：质的飞跃</a></li>
+    <li>下一篇</li>
+</dir>
+<div align="center"><center>
+
+<table border="0">
+    <tr>
+        <td><p align="center"><a
+        href="http://www.xqbase.com/" target="_blank"><img
+        src="xqbase.gif" border="0" width="88"
+        height="31"></a></p>
+        </td>
+    </tr>
+    <tr>
+        <td><a href="http://www.xqbase.com/"
+        target="_blank"><font size="2" face="Arial"><strong>www.xqbase.com</strong></font></a></td>
+    </tr>
+</table>
+</center></div>
+</body>
+</html>

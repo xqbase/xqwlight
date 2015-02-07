@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="**/.svn/" kind="src" path="src"/>
+	<classpathentry kind="src" path="test"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/jetty/jetty-continuation.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/jetty-deploy.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/jetty-http.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/jetty-io.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/jetty-security.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/jetty-server.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/jetty-servlet.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/jetty-util.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/jetty-webapp.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/jetty-xml.jar"/>
+	<classpathentry kind="lib" path="lib/servlet-api.jar"/>
+	<classpathentry kind="lib" path="webapps/ROOT/WEB-INF/lib/wicket.jar"/>
+	<classpathentry kind="output" path="webapps/ROOT/WEB-INF/classes"/>
+</classpath>

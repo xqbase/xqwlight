@@ -1,0 +1,181 @@
+//Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE
+BEGIN
+	"resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE
+BEGIN
+	"#include ""afxres.h""\r\n"
+	"\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+	"1 TYPELIB ""XQWLight.tlb""\r\n"
+    "\0"
+END
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "www.elephantbase.net\0"
+            VALUE "FileDescription", "XQWLight ActiveX Control Module\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "XQWLight\0"
+            VALUE "LegalCopyright", "Copyright (C) 2008\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "XQWLight.OCX\0"
+            VALUE "ProductName", "XQWLight ActiveX Control Module\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+            VALUE "OLESelfRegister", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_XQWLIGHT   BITMAP DISCARDABLE  "XQWLightCtl.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+
+IDD_PROPPAGE_XQWLIGHT DIALOG DISCARDABLE  0, 0, 250, 62
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "TODO: Place controls to manipulate properties of XQWLight Control on this dialog.",
+                    IDC_STATIC,7,25,229,16
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_PROPPAGE_XQWLIGHT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 243
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 55
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE
+BEGIN
+	IDS_XQWLIGHT               "XQWLight Control"
+	IDS_XQWLIGHT_PPG           "XQWLight Property Page"
+	IDS_XQWLIGHT_PPG_CAPTION   "General"
+
+END
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+1 TYPELIB "XQWLight.tlb"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
+/* === 以下是象棋小巫师的资源定义 === */
+
+IDI_APPICON  ICON   DISCARDABLE "..\\RES\\XQWIZARD.ICO"
+
+IDB_BOARD    BITMAP DISCARDABLE "..\\RES\\BOARD.BMP"
+IDB_SELECTED BITMAP DISCARDABLE "..\\RES\\SELECTED.BMP"
+IDB_RK       BITMAP DISCARDABLE "..\\RES\\RK.BMP"
+IDB_RA       BITMAP DISCARDABLE "..\\RES\\RA.BMP"
+IDB_RB       BITMAP DISCARDABLE "..\\RES\\RB.BMP"
+IDB_RN       BITMAP DISCARDABLE "..\\RES\\RN.BMP"
+IDB_RR       BITMAP DISCARDABLE "..\\RES\\RR.BMP"
+IDB_RC       BITMAP DISCARDABLE "..\\RES\\RC.BMP"
+IDB_RP       BITMAP DISCARDABLE "..\\RES\\RP.BMP"
+IDB_BK       BITMAP DISCARDABLE "..\\RES\\BK.BMP"
+IDB_BA       BITMAP DISCARDABLE "..\\RES\\BA.BMP"
+IDB_BB       BITMAP DISCARDABLE "..\\RES\\BB.BMP"
+IDB_BN       BITMAP DISCARDABLE "..\\RES\\BN.BMP"
+IDB_BR       BITMAP DISCARDABLE "..\\RES\\BR.BMP"
+IDB_BC       BITMAP DISCARDABLE "..\\RES\\BC.BMP"
+IDB_BP       BITMAP DISCARDABLE "..\\RES\\BP.BMP"
+
+IDR_CLICK    WAVE   DISCARDABLE "..\\RES\\CLICK.WAV"
+IDR_ILLEGAL  WAVE   DISCARDABLE "..\\RES\\ILLEGAL.WAV"
+IDR_MOVE     WAVE   DISCARDABLE "..\\RES\\MOVE.WAV"
+IDR_MOVE2    WAVE   DISCARDABLE "..\\RES\\MOVE2.WAV"
+IDR_CAPTURE  WAVE   DISCARDABLE "..\\RES\\CAPTURE.WAV"
+IDR_CAPTURE2 WAVE   DISCARDABLE "..\\RES\\CAPTURE2.WAV"
+IDR_CHECK    WAVE   DISCARDABLE "..\\RES\\CHECK.WAV"
+IDR_CHECK2   WAVE   DISCARDABLE "..\\RES\\CHECK2.WAV"
+IDR_WIN      WAVE   DISCARDABLE "..\\RES\\WIN.WAV"
+IDR_DRAW     WAVE   DISCARDABLE "..\\RES\\DRAW.WAV"
+IDR_LOSS     WAVE   DISCARDABLE "..\\RES\\LOSS.WAV"
+
+BOOK_DATA    RCDATA DISCARDABLE "..\\BOOK.DAT"
+
+/* === 以上是象棋小巫师的资源定义 === */

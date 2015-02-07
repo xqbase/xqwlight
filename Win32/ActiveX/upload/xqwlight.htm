@@ -1,0 +1,31 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type"
+content="text/html; charset=gb_2312-80">
+<meta name="GENERATOR" content="Microsoft FrontPage Express 2.0">
+<title></title>
+</head>
+
+<body>
+
+<p><input type="button" value="我先走" onclick="red_onclick()"><input
+type="button" value="电脑先走" onclick="black_onclick()"></p>
+
+<p><object classid="clsid:560D4DC2-6730-49F8-B47B-5B67C3F1B1A8"
+codebase="xqwlight.cab#version=1,0,0,1" align="baseline" border="0" width="520"
+height="576" name="XQWLight"></object></p>
+
+<p><script language="JavaScript"><!--
+function red_onclick() {
+  XQWLight.Flip = false;
+  XQWLight.Restart();
+}
+
+function black_onclick() {
+  XQWLight.Flip = true;
+  XQWLight.Restart();
+}
+// --></script></p>
+</body>
+</html>

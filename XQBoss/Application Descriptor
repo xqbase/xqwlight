@@ -1,0 +1,10 @@
+MIDlet-1: 象棋小博士,/images/xqboss.png,xqboss.XQBossMIDlet
+MIDlet-Jar-URL: XQBoss.jar
+MIDlet-Icon: /images/xqboss.png
+MicroEdition-Configuration: CLDC-1.0
+MIDlet-Version: 1.0
+MIDlet-Vendor: www.xqbase.com
+MIDlet-Name: 象棋小博士
+MIDlet-Description: 象棋小博士 1.0 Beta 1
+MIDlet-Info-URL: http://www.xqbase.com/
+MicroEdition-Profile: MIDP-2.0

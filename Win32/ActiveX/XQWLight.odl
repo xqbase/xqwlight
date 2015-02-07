@@ -1,0 +1,69 @@
+// XQWLight.odl : type library source for ActiveX Control project.
+
+// This file will be processed by the Make Type Library (mktyplib) tool to
+// produce the type library (XQWLight.tlb) that will become a resource in
+// XQWLight.ocx.
+
+#include <olectl.h>
+#include <idispids.h>
+
+[ uuid(8F247AFE-EECE-4A13-A14C-07473D7A976B), version(1.0),
+  helpfile("XQWLight.hlp"),
+  helpstring("XQWLight ActiveX Control module"),
+  control ]
+library XQWLIGHTLib
+{
+	importlib(STDOLE_TLB);
+	importlib(STDTYPE_TLB);
+
+	//  Primary dispatch interface for CXQWLightCtrl
+
+	[ uuid(3C3335F5-6C1C-4E1A-8219-94B713446DB7),
+	  helpstring("Dispatch interface for XQWLight Control"), hidden ]
+	dispinterface _DXQWLight
+	{
+		properties:
+			// NOTE - ClassWizard will maintain property information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_PROP(CXQWLightCtrl)
+			[id(1)] boolean Flip;
+			//}}AFX_ODL_PROP
+
+		methods:
+			// NOTE - ClassWizard will maintain method information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_METHOD(CXQWLightCtrl)
+			[id(2)] void Restart();
+			//}}AFX_ODL_METHOD
+	};
+
+	//  Event dispatch interface for CXQWLightCtrl
+
+	[ uuid(7A796794-4FFD-4E79-84A0-AC5BB732746D),
+	  helpstring("Event interface for XQWLight Control") ]
+	dispinterface _DXQWLightEvents
+	{
+		properties:
+			//  Event interface has no properties
+
+		methods:
+			// NOTE - ClassWizard will maintain event information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_EVENT(CXQWLightCtrl)
+			//}}AFX_ODL_EVENT
+	};
+
+	//  Class information for CXQWLightCtrl
+
+	[ uuid(560D4DC2-6730-49F8-B47B-5B67C3F1B1A8),
+	  helpstring("XQWLight Control"), control ]
+	coclass XQWLight
+	{
+		[default] dispinterface _DXQWLight;
+		[default, source] dispinterface _DXQWLightEvents;
+	};
+
+
+	//{{AFX_APPEND_ODL}}
+	//}}AFX_APPEND_ODL}}
+};

@@ -1,0 +1,10 @@
+MIDlet-1: 象棋小巫师,/images/xqwlight.png,xqwlight.XQWLMIDlet
+MIDlet-Jar-URL: XQWLight.jar
+MIDlet-Icon: /images/xqwlight.png
+MicroEdition-Configuration: CLDC-1.0
+MIDlet-Version: 1.70
+MIDlet-Info-URL: http://www.xqbase.com/
+MIDlet-Name: 象棋小巫师
+MIDlet-Description: 手机象棋游戏 - 象棋小巫师
+MIDlet-Vendor: www.xqbase.com
+MicroEdition-Profile: MIDP-2.0

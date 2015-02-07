@@ -1,0 +1,32 @@
+#include <winver.h>
+1                       ICON    DISCARDABLE     "PGNS2JAR.ICO"
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1, 3, 1, 0
+ PRODUCTVERSION 1, 3, 1, 0
+ FILEFLAGSMASK 0x3fL
+ FILEFLAGS 0x0L
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "Comments", "PGNS2JAR 1.31, (C) 2004-2010 www.xqbase.com\0"
+            VALUE "CompanyName", "www.xqbase.com\0"
+            VALUE "FileDescription", "PGNS2JAR\0"
+            VALUE "FileVersion", "1.31\0"
+            VALUE "InternalName", "PGNS2JAR\0"
+            VALUE "LegalCopyright", "PGNS2JAR 1.31, (C) 2004-2010 www.xqbase.com\0"
+            VALUE "LegalTrademarks", "www.xqbase.com\0"
+            VALUE "OriginalFilename", "PGNS2JAR.EXE\0"
+            VALUE "ProductName", "PGNS2JAR\0"
+            VALUE "ProductVersion", "1.31\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END

@@ -1,0 +1,284 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type"
+content="text/html; charset=gb_2312-80">
+<meta name="GENERATOR" content="Microsoft FrontPage Express 2.0">
+<title>电脑象棋循序渐进(三)：最初级的人工智能</title>
+</head>
+
+<body background="background.gif">
+
+<dl>
+    <div align="center"><center>
+    <dt><font size="6" face="隶书">电脑象棋循序渐进</font></dt>
+    </center></div><div align="center"><center>
+    <dt>　</dt>
+    </center></div><div align="center"><center>
+    <dt>象棋百科全书网 <font face="Times New Roman">(</font><a
+        href="mailto:webmaster@xqbase.com"><font
+        face="Times New Roman">webmaster@xqbase.com</font></a><font
+        face="Times New Roman">)</font>　<font
+        face="Times New Roman">2008</font>年<font
+        face="Times New Roman">4</font>月</dt>
+    </center></div>
+    <dt>　</dt>
+    <dt><font size="5" face="Arial"><strong>(</strong></font><font
+        size="5" face="楷体_GB2312"><strong>三</strong></font><font
+        size="5" face="Arial"><strong>) </strong></font><font
+        size="5" face="楷体_GB2312"><strong>最初级的人工智能</strong></font></dt>
+    <dt>　</dt>
+    <dt>　　与本文配套的示范程序是“象棋小巫师”<font
+        face="Times New Roman">0.3</font>版，程序清单是：</dt>
+    <dt>　　<font face="Times New Roman">(1) XQWL03.CPP</font>——<font
+        face="Times New Roman">C++</font>源程序；</dt>
+    <dt>　　<font face="Times New Roman">(2) XQWLIGHT.RC</font>——资源描述文件；</dt>
+    <dt>　　<font face="Times New Roman">(3) RESOURCE.H</font>——资源符号定义文件；</dt>
+    <dt>　　<font face="Times New Roman">(4) RES</font>目录——图标、图片、声音等资源。</dt>
+    <dt>　</dt>
+    <dt>　　在阅读本章前，建议读者先阅读象棋百科全书网计算机博弈专栏的以下几篇译文：</dt>
+    <dt><font size="3">　　</font><font size="3"
+        face="Times New Roman">(1) </font><a
+        href="http://www.xqbase.com/computer/basic_search.htm"
+        target="_blank"><font size="3">国际象棋程序设计(四)：基本搜索方法</font></a><font
+        size="3" face="Times New Roman">(</font><font
+        face="Times New Roman">Fran</font>&ccedil;<font
+        face="Times New Roman">ois Dominic Laram</font>&eacute;<font
+        face="Times New Roman">e)</font>；</dt>
+    <dt>　　<font face="Times New Roman">(2) </font><a
+        href="http://www.xqbase.com/computer/basic_evaluation.htm"
+        target="_blank">国际象棋程序设计(六)：局面评估函数</a><font
+        size="3" face="Times New Roman">(</font><font
+        face="Times New Roman">Fran</font>&ccedil;<font
+        face="Times New Roman">ois Dominic Laram</font>&eacute;<font
+        face="Times New Roman">e)</font>；</dt>
+    <dt>　　<font face="Times New Roman">(3) </font><a
+        href="http://www.xqbase.com/computer/search_intro1.htm"
+        target="_blank">基本搜索方法——简介<font
+        face="Times New Roman">(</font>一<font
+        face="Times New Roman">)</font></a><font
+        face="Times New Roman">(David Eppstein)</font>；</dt>
+    <dt>　　<font face="Times New Roman">(4) </font><a
+        href="http://www.xqbase.com/computer/search_intro2.htm"
+        target="_blank">基本搜索方法——简介<font
+        face="Times New Roman">(</font>二<font
+        face="Times New Roman">)</font></a><font
+        face="Times New Roman">(David Eppstein)</font>；</dt>
+    <dt>　　<font face="Times New Roman">(5) </font><a
+        href="http://www.xqbase.com/computer/search_minimax.htm"
+        target="_blank">基本搜索方法——最小<font
+        face="Times New Roman">-</font>最大搜索</a><font
+        face="Times New Roman">(Bruce Moreland)</font>；</dt>
+    <dt>　　<font face="Times New Roman">(6) </font><a
+        href="http://www.xqbase.com/computer/search_alphabeta.htm"
+        target="_blank">基本搜索方法——<font
+        face="Times New Roman">Alpha-Beta</font>搜索</a><font
+        face="Times New Roman">(Bruce Moreland)</font>；</dt>
+    <dt>　　<font face="Times New Roman">(7) </font><a
+        href="http://www.xqbase.com/computer/search_iterative.htm"
+        target="_blank">基本搜索方法——迭代加深</a><font
+        face="Times New Roman">(Bruce Moreland)</font>；</dt>
+    <dt>　　<font face="Times New Roman">(8) </font><a
+        href="http://www.xqbase.com/computer/advanced_intro2.htm"
+        target="_blank">高级搜索方法——简介<font
+        face="Times New Roman">(</font>二<font
+        face="Times New Roman">)</font></a><font
+        face="Times New Roman">(David Eppstein)</font>；</dt>
+    <dt>　　<font face="Times New Roman">(9) </font><a
+        href="http://www.xqbase.com/computer/other_winning.htm"
+        target="_blank">其他策略——胜利局面</a><font
+        face="Times New Roman">(David Eppstein)</font>；</dt>
+    <dt>　　<font face="Times New Roman">(10) </font><a
+        href="http://www.xqbase.com/computer/evalue_intro1.htm"
+        target="_blank"><font size="3">局面评估函数——简介(一)</font></a><font
+        face="Times New Roman">(David Eppstein)</font>。</dt>
+    <dt>　</dt>
+    <dt><font size="4" face="Arial"><strong>3.1 </strong></font><font
+        size="4" face="楷体_GB2312"><strong>局面评价函数</strong></font></dt>
+    <dt>　</dt>
+    <dt>　　根据国际象棋程序的经验，局面评价函数中最关键的因素是子力价值<font
+        face="Times New Roman">(</font>后<font
+        face="Times New Roman">9</font>车<font
+        face="Times New Roman">5</font>象马<font
+        face="Times New Roman">3</font>兵<font
+        face="Times New Roman">1)</font>。这个经验同样也适合于中国象棋，并且适当调整就可以得到更好的效果——子力价值是跟它的绝对位置相关的。最明显的例子是中国象棋中的兵<font
+        face="Times New Roman">(</font>卒<font
+        face="Times New Roman">)</font>，过河前我们给它很低的分数，过河后分数大涨，越接近九宫分数就越高，九宫中心甚至接近一个马或炮的值。</dt>
+    <dt>　　如此一来，每个兵种就都会有一个与绝对位置相关的价值数组，因此我们的程序里有一个常量数组
+        <font face="Times New Roman">cucvlPiecePos[7][256]</font>，它是从开源的象棋程序
+        <font face="Times New Roman">ElephantEye </font>中照搬过来的。</dt>
+    <dt>　　现在要开始进行局面评价了，我们是不是应该这样做：</dt>
+    <dd>　</dd>
+    <dd>vlEvaluate = 0; //
+        相对于红方来说的局面评价值</dd>
+    <dd>for (sq = 0; sq &lt; 256; sq ++) {</dd>
+    <dd><font color="#FF0000">　pc = ucpcSquares[sq];</font></dd>
+    <dd><font color="#FF0000">　if (IS_RED(pc)) {</font></dd>
+    <dd><font color="#FF0000">　　vlEvaluate += cucvlPiecePos[PIECE_TYPE(pc)][sq];</font></dd>
+    <dd><font color="#FF0000">　} else if (IS_BLACK(pc)) {</font></dd>
+    <dd><font color="#FF0000">　　vlEvaluate -= cucvlPiecePos[PIECE_TYPE(pc)][SQUARE_FLIP(sq)];</font></dd>
+    <dd><font color="#FF0000">　}</font></dd>
+    <dd>}</dd>
+    <dt>　</dt>
+    <dt>　　这样做太浪费时间了，因为根本没有必要每次都把棋盘扫描一遍。在我们的程序里，每走一步棋都会调用两到三次
+        <font face="Times New Roman">AddPiece (</font>放一枚棋子<font
+        face="Times New Roman">)</font>和 <font
+        face="Times New Roman">DelPiece (</font>取走一枚棋子<font
+        face="Times New Roman">)</font>，可以趁这个机会更新
+        <font face="Times New Roman">vlEvaluate(</font>将上面代码中红色的部分放到
+        <font face="Times New Roman">AddPiece </font>和 <font
+        face="Times New Roman">DelPiece </font>中<font
+        face="Times New Roman">)</font>。</dt>
+    <dt>　　对于象棋小巫师来说，这样的局面评价函数已经足够好了。</dt>
+    <dt>　</dt>
+    <dt><font size="4" face="Arial"><strong>3.2 Alpha-Beta</strong></font><font
+        size="4" face="楷体_GB2312"><strong>搜索复杂吗？</strong></font></dt>
+    <dt>　</dt>
+    <dt>　　我们可以很容易地写出一个<font
+        face="Times New Roman">Alpha-Beta</font>搜索函数：</dt>
+    <dd>　</dd>
+    <dd>int AlphaBeta(int vlAlpha, int vlBeta, int nDepth) {</dd>
+    <dd>　if (nDepth == 0) {</dd>
+    <dd>　　return 局面评价函数;</dd>
+    <dd>　}</dd>
+    <dd>　生成全部走法;</dd>
+    <dd>　排序全部走法;</dd>
+    <dd>　for (每个生成的走法) {</dd>
+    <dd>　　走这个走法;</dd>
+    <dd>　　int vl = -AlphaBeta(-vlBeta, -vlAlpha, nDepth - 1);</dd>
+    <dd>　　撤消这个走法;　</dd>
+    <dd>　　if (vl &gt;= vlBeta) {</dd>
+    <dd>　　　return vlBeta;</dd>
+    <dd>　　}</dd>
+    <dd>　　if (vl &gt; vlAlpha) {</dd>
+    <dd>　　　vlAlpha = vl;</dd>
+    <dd>　　}</dd>
+    <dd>　}</dd>
+    <dd>　return vlAlpha;</dd>
+    <dd>}</dd>
+    <dt>　</dt>
+    <dt>　　但是，这样的程序根本走不出棋来，因为它返回的是一个分数而不是一个走法。另外，我们还发现几个问题：</dt>
+    <dt>　　<font face="Times New Roman">(1) </font>排序的依据是什么？</dt>
+    <dt>　　<font face="Times New Roman">(2) </font>是不是每个生成的走法都可以走？</dt>
+    <dt>　　<font face="Times New Roman">(3) </font>如果什么走法都走不出来，那么返回<font
+        face="Times New Roman">vlAlpha</font>合理吗？</dt>
+    <dt>　</dt>
+    <dt>　　针对以上几个问题，我们对程序做如下改进：</dt>
+    <dt>　　<font face="Times New Roman">(0) </font>如果函数在根节点处被调用，就把最佳走法作为电脑要走的棋；</dt>
+    <dt>　　<font face="Times New Roman">(1) </font>国际象棋程序的经验证明，历史表是很好的走法排序依据；</dt>
+    <dt>　　<font face="Times New Roman">(2) </font>由于我们的走法生成器并没有考虑自杀<font
+        face="Times New Roman">(</font>被将军<font
+        face="Times New Roman">)</font>的情况，因此走完一步后要检查是否被将军了，被将军时应立即退回来；</dt>
+    <dt>　　<font face="Times New Roman">(3) </font>如果没有走出过任何走法，说明当前局面是杀棋或困毙局面，应该返回杀棋的分数。</dt>
+    <dt>　　下面是改进过的程序，改进的地方用红色标出：</dt>
+    <dt>　</dt>
+    <dd>int AlphaBeta(int vlAlpha, int vlBeta, int nDepth) {</dd>
+    <dd>　if (nDepth == 0) {</dd>
+    <dd>　　return 局面评价函数;</dd>
+    <dd>　}</dd>
+    <dd>　生成全部走法;</dd>
+    <dd><font color="#FF0000">　按历史表排序全部走法;</font></dd>
+    <dd>　for (每个生成的走法) {</dd>
+    <dd>　　走这个走法;</dd>
+    <dd><font color="#FF0000">　　if (被将军) {</font></dd>
+    <dd><font color="#FF0000">　　　撤消这个走法;</font></dd>
+    <dd><font color="#FF0000">　　} else {</font></dd>
+    <dd>　　　int vl = -AlphaBeta(-vlBeta, -vlAlpha, nDepth -
+        1);</dd>
+    <dd>　　　撤消这个走法;　</dd>
+    <dd>　　　if (vl &gt;= vlBeta) {</dd>
+    <dd><font color="#FF0000">　　　　将这个走法记录到历史表中;</font></dd>
+    <dd>　　　　return vlBeta;</dd>
+    <dd>　　　}</dd>
+    <dd>　　　if (vl &gt; vlAlpha) {</dd>
+    <dd><font color="#FF0000">　　　　设置最佳走法;</font></dd>
+    <dd>　　　　vlAlpha = vl;</dd>
+    <dd>　　　}</dd>
+    <dd><font color="#FF0000">　　}</font></dd>
+    <dd>　}</dd>
+    <dd><font color="#FF0000">　if (没有走过任何走法) {</font></dd>
+    <dd><font color="#FF0000">　　return 杀棋的分数;</font></dd>
+    <dd><font color="#FF0000">　}</font></dd>
+    <dd><font color="#FF0000">　将最佳走法记录到历史表中;</font></dd>
+    <dd><font color="#FF0000">　if (根节点) {</font></dd>
+    <dd><font color="#FF0000">　　最佳走法就是电脑要走的棋;</font></dd>
+    <dd><font color="#FF0000">　}</font></dd>
+    <dd>　return vlAlpha;</dd>
+    <dd>}</dd>
+    <dt>　</dt>
+    <dt><font size="4" face="Arial"><strong>3.3 </strong></font><font
+        size="4" face="楷体_GB2312"><strong>杀棋的分数</strong></font></dt>
+    <dt>　</dt>
+    <dt>　　遇到将死或困毙的局面时，应该返回 <font
+        face="Times New Roman">nDistance - INFINITY</font>，这样程序就能找到最短的搜索路线。<font
+        face="Times New Roman">nDistance </font>是当前节点距离根节点的步数，每走一个走法，<font
+        face="Times New Roman">nDistance </font>就增加<font
+        face="Times New Roman">1</font>，每撤消一个走法，<font
+        face="Times New Roman">nDistance </font>就减少<font
+        face="Times New Roman">1</font>。</dt>
+    <dt>　　如果程序中使用了置换表，这个问题将变得更加复杂，我们以后再讨论。</dt>
+    <dt>　</dt>
+    <dt><font size="4" face="Arial"><strong>3.4 </strong></font><font
+        size="4" face="楷体_GB2312"><strong>历史表</strong></font></dt>
+    <dt>　</dt>
+    <dt>　　国际象棋程序的经验证明，历史表是很好的走法排序依据。那么，什么样的走法要记录到历史表中去呢？象棋小巫师选择了以下两类走法：</dt>
+    <dt>　　<font face="Times New Roman">A. </font>产生<font
+        face="Times New Roman">Beta</font>截断的走法；</dt>
+    <dt>　　<font face="Times New Roman">B. </font>不能产生<font
+        face="Times New Roman">Beta</font>截断，但它是所有<font
+        face="Times New Roman">PV</font>走法<font
+        face="Times New Roman">(vl &gt; vlAlpha)</font>中最好的走法。</dt>
+    <dt>　</dt>
+    <dt>　　象棋小巫师的历史表是一个大小为<font
+        face="Times New Roman">65536</font>的数组，正好能将走法的数值<font
+        face="Times New Roman">(mv)</font>作为指标，因此根据走法取得历史表的值非常容易，即<font
+        face="Times New Roman">nHistoryTable[mv]</font>。那么，一个走法记录到历史表，究竟该给
+        <font face="Times New Roman">nHistoryTable </font>中的这个元素加多少分的值呢？我们仍旧沿用国际的经验——深度的平方。所以，更新历史表的代码非常简单：</dt>
+    <dd>　</dd>
+    <dd>nHistoryTable[mv] += nDepth * nDepth;</dd>
+    <dt>　</dt>
+    <dt><font size="4" face="Arial"><strong>3.5 </strong></font><font
+        size="4" face="楷体_GB2312"><strong>迭代加深和时间控制</strong></font></dt>
+    <dt>　</dt>
+    <dt>　　迭代加深具有一石多鸟的功效，目前最明显的供效是充分发挥历史表的作用——浅一层搜索结束后，历史表中积累了大量非常宝贵的数据，这将大幅度减少深一层搜索的时间。</dt>
+    <dt>　　在迭代加深的基础上实现时间控制，这将是非常简单的：</dt>
+    <dd>　</dd>
+    <dd>for (i = 1; i &lt; MAX_DEPTH; i ++) {</dd>
+    <dd>　AlphaBeta(-INFINITY, INFINITY, i);</dd>
+    <dd>　if (超过最短搜索时间) {</dd>
+    <dd>　　break;</dd>
+    <dd>　}</dd>
+    <dd>}</dd>
+    <dt>　</dt>
+    <dt>　　当然，我们还可以加入其他结束迭代加深的条件，例如当程序算出了杀棋<font
+        face="Times New Roman">(</font>分值接近<font
+        face="Times New Roman">INFINITY</font>或<font
+        face="Times New Roman">-INFINITY)</font>时，就没有必要进行更深的搜索了。</dt>
+</dl>
+
+<dir>
+    <li>上一篇　<a href="stepbystep2.htm">电脑象棋循序渐进<font
+        face="Times New Roman">(</font>二<font
+        face="Times New Roman">)</font>：让电脑掌握象棋规则</a></li>
+    <li>下一篇　<a href="stepbystep4.htm">电脑象棋循序渐进<font
+        face="Times New Roman">(</font>四<font
+        face="Times New Roman">)</font>：稍微聪明些了</a></li>
+</dir>
+<div align="center"><center>
+
+<table border="0">
+    <tr>
+        <td><p align="center"><a
+        href="http://www.xqbase.com/" target="_blank"><img
+        src="xqbase.gif" border="0" width="88"
+        height="31"></a></p>
+        </td>
+    </tr>
+    <tr>
+        <td><a href="http://www.xqbase.com/"
+        target="_blank"><font size="2" face="Arial"><strong>www.xqbase.com</strong></font></a></td>
+    </tr>
+</table>
+</center></div>
+</body>
+</html>
