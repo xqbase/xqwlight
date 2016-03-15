@@ -147,12 +147,7 @@ class SimplePos {
 					break;
 				}
 			} else if (c >= '1' && c <= '9') {
-				for (int k = 0; k < (c - '0'); k ++) {
-					if (x >= FILE_RIGHT) {
-						break;
-					}
-					x ++;
-				}
+				x += (c - '0');
 			} else if (c >= 'A' && c <= 'Z') {
 				if (x <= FILE_RIGHT) {
 					int pt = fenPiece(c);

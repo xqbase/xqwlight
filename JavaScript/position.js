@@ -627,12 +627,7 @@ Position.prototype.fromFen = function(fen) {
         break;
       }
     } else if (c >= "1" && c <= "9") {
-      for (var k = 0; k < (ASC(c) - ASC("0")); k ++) {
-        if (x >= FILE_RIGHT) {
-          break;
-        }
-        x ++;
-      }
+      x += (ASC(c) - ASC("0"));
     } else if (c >= "A" && c <= "Z") {
       if (x <= FILE_RIGHT) {
         var pt = CHAR_TO_PIECE(c);

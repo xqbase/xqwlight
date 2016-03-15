@@ -1,4 +1,4 @@
-﻿/*
+/*
 Position.as - Source Code for XiangQi Wizard Light, Part I
 
 XiangQi Wizard Light - a Flash Chinese Chess Program
@@ -981,13 +981,7 @@ package {
 						break;
 					}
 				} else if (c >= '1' && c <= '9') {
-					var kk:int = c.charCodeAt() - '0'.charCodeAt();
-					for (var k:int = 0; k < kk; k ++) {
-						if (x >= FILE_RIGHT) {
-							break;
-						}
-						x ++;
-					}
+					x += (c.charCodeAt() - '0'.charCodeAt());
 				} else if (c >= 'A' && c <= 'Z') {
 					if (x <= FILE_RIGHT) {
 						pt = fenPiece(c);
