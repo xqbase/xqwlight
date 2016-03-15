@@ -684,8 +684,8 @@ Position.prototype.toFen = function() {
     }
     fen += "/";
   }
-  return fen.substring(0, fen.length - 1) + " " +
-      (this.sdPlayer == 0 ? 'w' : 'b');
+  return fen.substring(0, fen.length - 1) +
+      (this.sdPlayer == 0 ? " w" : " b");
 }
 
 Position.prototype.generateMoves = function(vls) {
