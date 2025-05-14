@@ -2,7 +2,7 @@
 '
 ' XiangQi Wizard Light - a Chinese Chess Program for Windows CE
 ' Designed by Morning Yellow, Version: 1.21, Last Modified: Jan. 2008
-' Copyright (C) 2004-2008 www.elephantbase.net
+' Copyright (C) 2004-2008 www.xqbase.com
 '
 ' This program is free software; you can redistribute it and/or modify
 ' it under the terms of the GNU General Public License as published by
@@ -189,7 +189,7 @@ Public Class StartUp
 
     Private Sub btnAbout_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAbout.Click
         MsgBox("象棋小巫师 1.21" + vbCrLf + "象棋百科全书 荣誉出品" + vbCrLf + vbCrLf + _
-                "(C) 2004-2008 www.elephantbase.net" + vbCrLf + "本产品符合GNU通用公共许可协议" + vbCrLf + vbCrLf + _
-                "欢迎登录 www.elephantbase.net" + vbCrLf + "免费下载PC版 象棋巫师", MsgBoxStyle.Information, "关于象棋小巫师")
+                "(C) 2004-2008 www.xqbase.com" + vbCrLf + "本产品符合GNU通用公共许可协议" + vbCrLf + vbCrLf + _
+                "欢迎登录 www.xqbase.com" + vbCrLf + "免费下载PC版 象棋巫师", MsgBoxStyle.Information, "关于象棋小巫师")
     End Sub
 End Class

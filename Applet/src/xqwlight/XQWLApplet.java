@@ -3,7 +3,7 @@ XQWLApplet.java - Source Code for XiangQi Wizard Light, Part IV
 
 XiangQi Wizard Light - a Chinese Chess Program for Java Applet
 Designed by Morning Yellow, Version: 1.25, Last Modified: Mar. 2008
-Copyright (C) 2004-2008 www.elephantbase.net
+Copyright (C) 2004-2008 www.xqbase.com
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

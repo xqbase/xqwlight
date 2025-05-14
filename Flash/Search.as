@@ -1,9 +1,9 @@
-﻿/*
+/*
 Search.as - Source Code for XiangQi Wizard Light, Part II
 
 XiangQi Wizard Light - a Flash Chinese Chess Program
 Designed by Morning Yellow, Version: 1.0, Last Modified: Jul. 2008
-Copyright (C) 2004-2008 www.elephantbase.net
+Copyright (C) 2004-2008 www.xqbase.com
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

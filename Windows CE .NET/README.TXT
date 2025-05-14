@@ -8,4 +8,4 @@
 　　鉴于绝大多数 Windows CE 平台都带有 Java ME 的虚拟机，象棋小巫师的 Windows CE 版已停止开发，为此象棋巫师开发团队向广大象棋爱好者致以诚挚的歉意。象棋小巫师的 Windows CE 版本请到 SourceForge 网站上下载：
 　　　　http://nchc.dl.sourceforge.net/sourceforge/xqwizard/xqwlight_release.zip
 
-　　欢迎登录 www.elephantbase.net 免费下载PC版 象棋巫师
+　　欢迎登录 www.xqbase.com 免费下载PC版 象棋巫师

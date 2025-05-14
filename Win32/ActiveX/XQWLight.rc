@@ -61,7 +61,7 @@ BEGIN
     BEGIN
         BLOCK "040904B0"
         BEGIN
-            VALUE "CompanyName", "www.elephantbase.net\0"
+            VALUE "CompanyName", "www.xqbase.com\0"
             VALUE "FileDescription", "XQWLight ActiveX Control Module\0"
             VALUE "FileVersion", "1, 0, 0, 1\0"
             VALUE "InternalName", "XQWLight\0"
